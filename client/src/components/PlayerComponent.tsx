@@ -117,17 +117,17 @@ const PlayerComponent = () => {
   };
 
   return (
-    <div className="player-container p-6 flex justify-center rounded-md border-4 border-black bg-yellow-400 ">
+    <div className="player-container fixed bottom-2 p-6 flex self-center justify-center rounded-md border-4 border-black bg-colors-customGreen lg:right-2">
       {currentTrack ? (
-        <div className="flex items-stretch  gap-3 self-center bg-colors-customYellow border-4 border-black rounded-md p-4 w-3/4">
+        <div className="flex items-stretch gap-3 self-center bg-colors-customYellow border-4 border-black rounded-md p-4">
           <img
             src={currentTrack.album.images[0]?.url}
             alt="Album Cover"
             className="rounded-md border-4 border-black w-1/3 self-center object-cover"
           />
           <div className="rounded-md border-4 border-black w-2/3 p-4 bg-colors-customPink text-left">
-            <h2 className="text-3xl text-strong">{currentTrack.name}</h2>
-            <h3 className="text-2xl">
+            <h2 className="text-1xl text-strong">{currentTrack.name}</h2>
+            <h3 className="text-xl">
               {currentTrack.artists.map((artist) => artist.name).join(", ")}
             </h3>
             <p>{currentTrack.album.name}</p>
@@ -172,7 +172,7 @@ const PlayerComponent = () => {
           </div>
         </div>
       ) : (
-        <p>No song is playing...</p>
+        <p>No song is playing at the moment :(</p>
       )}
     </div>
   );
