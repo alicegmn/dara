@@ -4,22 +4,15 @@ import Login from "./Login";
 import useAccessStore from "@/store/store";
 import useAuth from "@/helpers/useAuth";
 import SongListContainer from "@/components/ui/SongListContainer";
-import { useEffect } from "react";
+import { useAuthCode } from "@/hooks/useAuthCode";
 
 export default function Home() {
-  // Hämta auth code från URL:en
-  const code = new URLSearchParams(window.location.search).get("code");
+  // Använd useAuthCode-hooken för att hämta auth koden och rensa URL:en
+  const code = useAuthCode();
   const token = useAccessStore((state) => state.accessToken);
 
-  // Använd auth code för att få access token
+  // Använd auth koden för att erhålla access token
   useAuth(code || "");
-
-  // Ta bort auth code från URL:en efter användning
-  useEffect(() => {
-    if (code) {
-      window.history.replaceState({}, "", "/");
-    }
-  }, [code]);
 
   console.log("code:", code);
   console.log("accesstoken:", token);
