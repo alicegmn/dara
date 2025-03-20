@@ -96,7 +96,6 @@ const ArtistCard: FC<Props> = ({ artist, handlePlayTrack }) => {
           </CardContent>
         </div>
       </Card>
-      <PlayerComponent />
     </section>
   );
 };

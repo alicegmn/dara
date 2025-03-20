@@ -85,13 +85,18 @@ export default function useSpotifyPlayer() {
       });
     };
 
+    // Om Spotify SDK redan finns, initiera spelaren direkt
     if (window.Spotify) {
       initializePlayer();
     } else {
+      // Definiera global callback innan script laddas
+      window.onSpotifyWebPlaybackSDKReady = () => {
+        initializePlayer();
+      };
+
       const script = document.createElement("script");
       script.src = "https://sdk.scdn.co/spotify-player.js";
       script.async = true;
-      script.onload = () => initializePlayer();
       document.body.appendChild(script);
     }
   }, [accessToken, setDeviceId]);

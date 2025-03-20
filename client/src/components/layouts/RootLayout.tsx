@@ -1,16 +1,18 @@
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
-import useAccessStore from "@/store/store"; // Hämta accessToken
+import PlayerComponent from "@/components/ui/PlayerComponent";
+import useAccessStore from "@/store/store";
 
 export default function RootLayout() {
   const accessToken = useAccessStore((state) => state.accessToken);
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       {accessToken && <Header />}
-      <main>
+      <main className="flex-1">
         <Outlet />
       </main>
+      {accessToken && <PlayerComponent />}
     </div>
   );
 }
