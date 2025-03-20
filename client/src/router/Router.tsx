@@ -1,10 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import RootLayout from "../components/layouts/RootLayout";
 import Home from "../pages/Home";
-import SignIn from "../pages/SignIn";
 import NotFound from "../pages/NotFound";
 import ArtistId from "@/pages/ArtistId";
-import Player from "@/pages/Player";
+// import Player from "@/pages/Player";
 import Reset from "@/pages/Reset";
 import AuthProvider from "@/providers/AuthProvider";
 
@@ -21,14 +20,10 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home />,
       },
-      {
-        path: "/Player",
-        element: <Player />,
-      },
-      {
-        path: "/SignIn",
-        element: <SignIn />,
-      },
+      // {
+      //   path: "/Player",
+      //   element: <Player />,
+      // },
       {
         path: "/artist/:id",
         element: <ArtistId />,

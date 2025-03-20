@@ -1,5 +1,5 @@
 import React from "react";
-import useAuth from "@/helpers/useAuth";
+import useAuth from "@/hooks/useAuth";
 import { useAuthCode } from "@/hooks/useAuthCode";
 
 /**

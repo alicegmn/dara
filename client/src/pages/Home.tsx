@@ -1,6 +1,6 @@
 import ListContainer from "@/components/ui/listContainer";
 import SearchBar from "@/components/SearchBar";
-import Login from "./Login";
+import LogIn from "@/components/LogIn";
 import useAccessStore from "@/store/store";
 import SongListContainer from "@/components/ui/SongListContainer";
 
@@ -22,7 +22,7 @@ export default function Home() {
         </div>
       ) : (
         <div>
-          <Login />
+          <LogIn />
         </div>
       )}
     </div>
