@@ -29,7 +29,7 @@ const PlayerComponent = () => {
 
   return (
     <div
-      className={`fixed bottom-2 w-5/6 max-w-96 left-1/2 transform -translate-x-1/2 rounded-md bg-colors-customGreen border-4 p-6 border-black transition-all duration-300 ${
+      className={`rounded-md bg-colors-customGreen border-4 p-6 border-black transition-all duration-300 ${
         isExpanded ? "h-5/6" : "h-20"
       }`}
       onClick={toggleExpand}

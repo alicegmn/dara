@@ -4,6 +4,8 @@ import searchSpotify from "../helpers/searchSpotify";
 import useAccessStore from "@/store/store";
 import SongList from "./ui/SongList";
 import ArtistList from "./ui/ArtistList";
+// Importera spelarens store för att kunna styra uppspelning
+import { usePlayerStore } from "@/store/playerStore";
 
 interface SpotifyTrack {
   id: string;
@@ -47,6 +49,15 @@ export default function SearchBar() {
   const [activeTab, setActiveTab] = useState<TabOption>("songs");
   const accessToken = useAccessStore().accessToken;
 
+  // Hämta funktioner från spelarens store
+  const setTrackUri = usePlayerStore((state) => state.setTrackUri);
+  const togglePlay = usePlayerStore((state) => state.togglePlay);
+
+  // Funktion för att spela en låt via den inbyggda spelaren
+  const handlePlayTrack = (uri: string) => {
+    setTrackUri(uri);
+  };
+
   // Sök med fördröjning när användaren skriver
   useEffect(() => {
     // Om söktermen är tom, återställ state och sluta
@@ -85,6 +96,7 @@ export default function SearchBar() {
     id: track.id,
     name: track.name,
     images: track.album.images,
+    uri: `spotify:track:${track.id}`, // Korrekt formaterat Spotify URI för uppspelning
   }));
 
   // Formatera artistresultaten för Artists
@@ -98,7 +110,12 @@ export default function SearchBar() {
   const formattedAlbums = (() => {
     const albumMap = new Map<
       string,
-      { id: string; name: string; images: { url: string }[] }
+      {
+        id: string;
+        name: string;
+        images: { url: string }[];
+        artists: { name: string }[];
+      }
     >();
     searchResults.tracks.items.forEach((track) => {
       // Använder albumets första bild URL som unik nyckel om inget album-id finns
@@ -108,6 +125,7 @@ export default function SearchBar() {
           id: track.id, // Om det fanns ett album-id skulle du använda det här
           name: track.album.name || track.name, // Prioritera albumets namn om tillgängligt
           images: track.album.images,
+          artists: track.album.artists, // Lägg till albumets artister
         });
       }
     });
@@ -126,7 +144,13 @@ export default function SearchBar() {
 
     switch (activeTab) {
       case "songs":
-        return <SongList songs={formattedSongs} />;
+        return (
+          <SongList
+            songs={formattedSongs}
+            handlePlayTrack={handlePlayTrack}
+            togglePlay={togglePlay}
+          />
+        );
       case "artists":
         return <ArtistList artists={formattedArtists} />;
       case "albums":
@@ -147,6 +171,14 @@ export default function SearchBar() {
                       />
                     )}
                     <h3 className="text-white font-bold mt-2">{album.name}</h3>
+                    <div className="artist-names mt-1">
+                      {album.artists &&
+                        album.artists.map((artist, index) => (
+                          <p key={index} className="text-black">
+                            {artist.name}
+                          </p>
+                        ))}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -168,41 +200,43 @@ export default function SearchBar() {
   ];
 
   return (
-    <div className="w-full">
-      <div className="flex justify-center w-full px-4">
-        <Input
-          type="text"
-          placeholder="Search..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="placeholder:text-white text-white mt-5 w-full sm:w-full md:w-[calc(100%-2rem)] lg:w-[calc(66.67%-2rem)]"
-        />
-      </div>
-      {/* Toggle-meny */}
-      {searchTerm && (
-        <div className="flex justify-center gap-4 mt-4">
-          {tabs.map((tab) => (
-            <button
-              key={tab.key}
-              onClick={() => setActiveTab(tab.key)}
-              className={`px-4 py-2 rounded-md border transition-colors ${
-                activeTab === tab.key
-                  ? "bg-colors-customPink text-black font-medium border-black border-4"
-                  : "bg-transparent text-white hover:bg-colors-customPink"
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+    <div className="rounded-md border-4 border-black bg-colors-customGreen m-4 p-4 sm:w-full md:w-1/2 lg:w-1/3 h-[70vh] sm:h-[70vh] md:h-[80vh] lg:h-[90vh] overflow-y-auto">
+      <div className="w-full">
+        <div className="flex justify-center w-full px-4">
+          <Input
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="placeholder:text-white text-white mt-5 w-full sm:w-full md:w-[calc(100%-2rem)] lg:w-[calc(66.67%-2rem)]"
+          />
         </div>
-      )}
+        {/* Toggle-meny */}
+        {searchTerm && (
+          <div className="flex justify-center gap-4 mt-4">
+            {tabs.map((tab) => (
+              <button
+                key={tab.key}
+                onClick={() => setActiveTab(tab.key)}
+                className={`px-4 py-2 rounded-md border transition-colors ${
+                  activeTab === tab.key
+                    ? "bg-colors-customPink text-black font-medium border-black border-4"
+                    : "bg-transparent text-white hover:bg-colors-customPink"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        )}
 
-      {/* Resultatcontainer */}
-      {searchTerm && (
-        <div className="p-2 flex flex-col items-center mt-4 w-full">
-          {renderResults()}
-        </div>
-      )}
+        {/* Resultatcontainer */}
+        {searchTerm && (
+          <div className="p-2 flex flex-col items-center mt-4 w-full">
+            {renderResults()}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

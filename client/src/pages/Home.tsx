@@ -1,4 +1,4 @@
-import ListContainer from "@/components/ui/listContainer";
+import ListContainer from "@/components/ui/ListContainer";
 import SearchBar from "@/components/SearchBar";
 import LogIn from "@/components/LogIn";
 import useAccessStore from "@/store/store";
@@ -11,11 +11,8 @@ export default function Home() {
     <div>
       {token ? (
         <div>
-          <h1 className="text-4xl text-white">
-            Search for a song or an artist
-          </h1>
-          <SearchBar />
           <section className="flex flex-col justify-center p-2 align-middle md:flex-row lg:flex-row">
+            <SearchBar />
             <ListContainer />
             <SongListContainer />
           </section>

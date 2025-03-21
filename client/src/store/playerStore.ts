@@ -5,6 +5,7 @@ interface PlayerState {
   isPlaying: boolean;
   deviceId: string | null;
   setTrack: (uri: string) => void;
+  setTrackUri: (uri: string) => void;
   setDeviceId: (id: string) => void;
   togglePlay: (boolean: boolean) => void;
 }
@@ -14,6 +15,7 @@ export const usePlayerStore = create<PlayerState>((set) => ({
   isPlaying: false,
   deviceId: null,
   setTrack: (uri) => set({ trackUri: uri, isPlaying: true }),
+  setTrackUri: (uri) => set({ trackUri: uri }),
   setDeviceId: (id) => set({ deviceId: id }),
   togglePlay: (boolean: boolean) => set(() => ({ isPlaying: boolean })),
 }));

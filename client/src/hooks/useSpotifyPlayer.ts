@@ -18,12 +18,13 @@ export default function useSpotifyPlayer() {
     if (!trackUri) return;
     async function playTrack() {
       try {
+        // Bygger URL med device_id som query parameter om den finns
+        const url = deviceId
+          ? `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`
+          : "https://api.spotify.com/v1/me/player/play";
         await axios.put(
-          "https://api.spotify.com/v1/me/player/play",
-          {
-            uris: [trackUri],
-            device_id: deviceId,
-          },
+          url,
+          { uris: [trackUri] },
           {
             headers: {
               "Content-Type": "application/json",
