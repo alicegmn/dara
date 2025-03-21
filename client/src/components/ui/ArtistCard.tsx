@@ -1,5 +1,4 @@
 import { FC } from "react";
-import PlayerComponent from "@/components/ui/PlayerComponent";
 import {
   Card,
   CardContent,
