@@ -12,6 +12,7 @@ export default function useSpotifyPlayer() {
   const [currentTrack, setCurrentTrack] = useState<Track | undefined>(
     undefined
   );
+  const [progress, setProgress] = useState(0);
 
   // Spela upp låt när trackUri ändras
   useEffect(() => {
@@ -75,6 +76,7 @@ export default function useSpotifyPlayer() {
         if (!state) return;
         console.log("🎵 Now Playing:", state.track_window.current_track);
         setCurrentTrack(state.track_window.current_track);
+        setProgress(state.position);
       });
 
       spotifyPlayer.connect().then((success) => {
@@ -133,6 +135,8 @@ export default function useSpotifyPlayer() {
 
   return {
     currentTrack,
+    isPlaying,
+    progress,
     handlePlayPause,
     handleNextTrack,
     handlePrevTrack,

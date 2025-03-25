@@ -1,7 +1,8 @@
+import React from "react";
 import { Play, Pause, SkipBack, SkipForward } from "lucide-react";
 
 type ButtonProps = {
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   size?: "sm" | "md" | "lg";
   variant?: "primary" | "secondary" | "ghost";
   icon: React.ReactNode;
@@ -21,7 +22,7 @@ const buttonVariants = {
   ghost: "bg-transparent hover:bg-gray-100 text-black",
 };
 
-const PlayerButton: React.FC<ButtonProps> = ({
+export const PlayerButton: React.FC<ButtonProps> = ({
   onClick,
   size = "md",
   variant = "primary",

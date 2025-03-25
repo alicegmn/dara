@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import useAccessStore from "@/store/store";
 import Header from "./Header";
-import Footer from "./Footer";
+import PlayerComponent from "../ui/PlayerComponent";
 
 export default function RootLayout() {
   const accessToken = useAccessStore((state) => state.accessToken);
@@ -12,7 +12,7 @@ export default function RootLayout() {
       <main className="flex-1">
         <Outlet />
       </main>
-      {accessToken && <Footer />}
+      {accessToken && <PlayerComponent />}
     </div>
   );
 }

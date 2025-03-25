@@ -12,123 +12,124 @@ const PlayerComponent = () => {
   const {
     currentTrack,
     isPlaying,
+    progress,
     handlePlayPause,
     handleNextTrack,
     handlePrevTrack,
   } = useSpotifyPlayer();
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
+  // If no track is playing, return null to not render the component
+  if (!currentTrack) return null;
+
   // Toggle between expanded and minimized view
   const toggleExpand = (
     e?: React.MouseEvent<HTMLDivElement | HTMLButtonElement, MouseEvent>
   ) => {
-    // If event exists, stop its propagation to avoid triggering other actions
     e?.stopPropagation();
     setIsExpanded((prev) => !prev);
   };
 
+  // När expandad, rendera en fullskärms-overlay
+  if (isExpanded && currentTrack) {
+    return (
+      <div
+        className="fixed inset-0 z-50 bg-colors-customPink bg-opacity-95 flex items-center justify-center p-4 overflow-auto"
+        onClick={toggleExpand} // Klicka utanför innehållet stänger expanderad vy
+      >
+        <div 
+          className="relative bg-colors-customYellow border-4 border-black rounded-lg p-6 max-w-[90vw] max-h-[90vh] w-full mx-auto"
+          onClick={(e) => e.stopPropagation()} // förhindrar att klick inom innehållet stänger overlayen
+        >
+          {/* Stäng-knapp */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleExpand(e);
+            }}
+            className="absolute top-4 right-4 text-white text-4xl focus:outline-none"
+          >
+            ✕
+          </button>
+          <div className="flex flex-col items-center gap-4">
+            <img
+              src={currentTrack.album.images[0]?.url}
+              alt="Album Cover"
+              className="w-full max-w-sm rounded-md border-4 border-black"
+            />
+            <div className="flex flex-col items-center">
+              <h2 className="text-3xl font-bold text-white text-center">
+                {currentTrack.name}
+              </h2>
+              <h3 className="text-2xl text-white text-center">
+                {currentTrack.artists.map((artist) => artist.name).join(", ")}
+              </h3>
+              <p className="text-black text-xl text-center">{currentTrack.album.name}</p>
+            </div>
+          </div>
+          <div className="w-full mt-6 px-2">
+            <Slider
+              min={0}
+              max={currentTrack.duration_ms}
+              value={[progress]}
+              step={1}
+              className="w-full"
+              aria-label="Spårposition"
+            />
+          </div>
+          <div className="flex items-center justify-center gap-6 mt-6">
+            <PreviousButton
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePrevTrack();
+              }}
+            />
+            {isPlaying ? (
+              <PauseButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handlePlayPause();
+                }}
+              />
+            ) : (
+              <PlayButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handlePlayPause();
+                }}
+              />
+            )}
+            <NextButton
+              onClick={(e) => {
+                e.stopPropagation();
+                handleNextTrack();
+              }}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Standard view (minimized)
   return (
     <div
-      className={`rounded-md bg-colors-customGreen border-4 p-6 border-black transition-all duration-300 ${
-        isExpanded ? "h-5/6" : "h-20"
-      }`}
+      className="fixed bottom-0 w-screen bg-colors-customGreen border-t-4 p-6 border-black h-16"
       onClick={toggleExpand}
     >
-      {currentTrack ? (
-        <>
-          {/* Toggle Button: Arrow icon in top right corner */}
-          <button
-            onClick={(e) => toggleExpand(e)}
-            className="absolute top-2 right-2 text-white text-7xl focus:outline-none"
-          >
-            {isExpanded ? "˯" : "˰"}
-          </button>
-
-          {/* Minimized view: Show only summary */}
-          {!isExpanded && (
-            <div className="flex items-center h-full px-4">
-              <img
-                src={currentTrack.album.images[0]?.url}
-                alt="Album Cover"
-                className="w-12 h-12 rounded-md border-2 border-black mr-4"
-              />
-              <div className="text-white">
-                <p className="font-bold truncate">{currentTrack.name}</p>
-                <p className="text-sm truncate">
-                  {currentTrack.artists.map((artist) => artist.name).join(", ")}
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Expanderad vy: Visa fulla kontroller och info */}
-          {isExpanded && (
-            <div className="p-4 bg-colors-customYellow border-4 border-black rounded-md flex flex-col items-center justify-center">
-              <div className="flex flex-col items-center gap-4">
-                <img
-                  src={currentTrack.album.images[0]?.url}
-                  alt="Album Cover"
-                  className="w-5/6 rounded-md border-4 border-black"
-                />
-                <div className="flex flex-col items-center">
-                  <h2 className="text-2xl font-bold text-white">
-                    {currentTrack.name}
-                  </h2>
-                  <h3 className="text-xl text-white">
-                    {currentTrack.artists
-                      .map((artist) => artist.name)
-                      .join(", ")}
-                  </h3>
-                  <p className="text-black">{currentTrack.album.name}</p>
-                </div>
-              </div>
-              <div className="mt-4 w-full">
-                <Slider
-                  min={0}
-                  max={currentTrack.duration_ms}
-                  defaultValue={[1]}
-                  step={1}
-                  className="w-full"
-                  aria-label="Spårposition"
-                />
-              </div>
-              <div className="flex items-center gap-4 mt-4 justify-center">
-                <PreviousButton
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handlePrevTrack();
-                  }}
-                />
-                {isPlaying ? (
-                  <PauseButton
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handlePlayPause();
-                    }}
-                  />
-                ) : (
-                  <PlayButton
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handlePlayPause();
-                    }}
-                  />
-                )}
-                <NextButton
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleNextTrack();
-                  }}
-                />
-              </div>
-            </div>
-          )}
-        </>
-      ) : (
-        <div className="flex justify-center items-center h-full">
-          <p className="text-white">No song is playing at the moment :(</p>
+      <div className="flex items-center h-full px-4">
+        <img
+          src={currentTrack.album.images[0]?.url}
+          alt="Album Cover"
+          className="w-12 h-12 rounded-md border-2 border-black mr-4"
+        />
+        <div className="text-white">
+          <p className="font-bold truncate">{currentTrack.name}</p>
+          <p className="text-sm truncate">
+            {currentTrack.artists.map((artist) => artist.name).join(", ")}
+          </p>
         </div>
-      )}
+      </div>
     </div>
   );
 };
