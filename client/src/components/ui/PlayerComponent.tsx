@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useSpotifyPlayer from "@/hooks/useSpotifyPlayer";
 import { Slider } from "@radix-ui/react-slider";
 import {
@@ -17,12 +17,11 @@ const PlayerComponent = () => {
     handleNextTrack,
     handlePrevTrack,
   } = useSpotifyPlayer();
-  const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
-  // If no track is playing, return null to not render the component
-  if (!currentTrack) return null;
+  const [isExpanded, setIsExpanded] = useState(false);
 
-  // Toggle between expanded and minimized view
+  const modalRef = useRef<HTMLDivElement | null>(null);
+
   const toggleExpand = (
     e?: React.MouseEvent<HTMLDivElement | HTMLButtonElement, MouseEvent>
   ) => {
@@ -30,31 +29,74 @@ const PlayerComponent = () => {
     setIsExpanded((prev) => !prev);
   };
 
-  // När expandad, rendera en fullskärms-overlay
-  if (isExpanded && currentTrack) {
+  // ✅ Focus trap & ESC for expanded player
+  useEffect(() => {
+    if (!isExpanded) return;
+
+    const modal = modalRef.current;
+    const focusableEls = modal?.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+
+    const firstEl = focusableEls?.[0];
+    const lastEl = focusableEls?.[focusableEls.length - 1];
+
+    firstEl?.focus();
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsExpanded(false);
+      }
+
+      if (e.key === "Tab" && focusableEls && firstEl && lastEl) {
+        if (e.shiftKey && document.activeElement === firstEl) {
+          e.preventDefault();
+          lastEl.focus();
+        } else if (!e.shiftKey && document.activeElement === lastEl) {
+          e.preventDefault();
+          firstEl.focus();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isExpanded]);
+
+  // ⛔ Don't render if nothing is playing
+  if (!currentTrack) return null;
+
+  // ✅ Expanded player
+  if (isExpanded) {
     return (
       <div
+        ref={modalRef}
         className="fixed inset-0 z-50 bg-container flex items-center justify-center p-4 overflow-auto"
-        onClick={toggleExpand} // Klicka utanför innehållet stänger expanderad vy
+        onClick={toggleExpand}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Expanded player"
       >
         <div
           className="relative bg-player border-4 border-border rounded-2xl p-6 max-w-[80vw] max-h-[80vh] w-full"
-          onClick={(e) => e.stopPropagation()} // förhindrar att klick inom innehållet stänger overlayen
+          onClick={(e) => e.stopPropagation()}
         >
-          {/* Stäng-knapp */}
+          {/* Close button */}
           <button
             onClick={(e) => {
               e.stopPropagation();
               toggleExpand(e);
             }}
-            className="absolute top-4 right-4 text-text text-4xl focus:outline-none"
+            className="absolute top-4 right-4 text-text text-4xl focus:outline focus:outline-2 focus:outline-focus rounded-xl"
+            aria-label="Close expanded player"
           >
             ✕
           </button>
+
           <div className="flex flex-col items-center gap-4">
             <img
               src={currentTrack.album.images[0]?.url}
-              alt="Album Cover"
+              alt={`Album cover for ${currentTrack.name}`}
               className="w-3/5 rounded-2xl border-4 border-border"
             />
             <div className="flex flex-col items-center">
@@ -69,6 +111,7 @@ const PlayerComponent = () => {
               </p>
             </div>
           </div>
+
           <div className="w-full mt-6 px-2">
             <Slider
               min={0}
@@ -76,9 +119,10 @@ const PlayerComponent = () => {
               value={[progress]}
               step={1}
               className="w-full"
-              aria-label="Spårposition"
+              aria-label="Track position"
             />
           </div>
+
           <div className="flex items-center justify-center gap-6 mt-6">
             <PreviousButton
               onClick={(e) => {
@@ -113,16 +157,25 @@ const PlayerComponent = () => {
     );
   }
 
-  // Standard view (minimized)
+  // ✅ Minimized player
   return (
     <div
-      className="fixed bottom-0 w-screen bg-player border-t-4 p-6 border-border h-16"
+      className="fixed bottom-0 w-screen bg-player border-t-4 p-6 border-border h-16 cursor-pointer"
       onClick={toggleExpand}
+      role="button"
+      tabIndex={0}
+      aria-label="Expand player"
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault(); // förhindra scroll vid space
+          toggleExpand();
+        }
+      }}
     >
       <div className="flex items-center h-full px-4">
         <img
           src={currentTrack.album.images[0]?.url}
-          alt="Album Cover"
+          alt={`Album cover for ${currentTrack.name}`}
           className="w-12 h-12 rounded-xl border-2 border-border mr-4"
         />
         <div className="text-text">
