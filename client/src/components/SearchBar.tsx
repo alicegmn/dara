@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Input } from "./ui/input";
 import searchSpotify from "../helpers/searchSpotify";
 import useAccessStore from "@/store/store";
@@ -161,12 +161,20 @@ export default function SearchBar() {
                 {formattedAlbums.map((album) => (
                   <div
                     key={album.id}
-                    className="rounded-2xl border-4 border-border bg-card p-4 hover:bg-hoveredButton"
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => handlePlayTrack(`spotify:track:${album.id}`)}
+                    aria-label={`Play album ${album.name} by ${album.artists
+                      .map((a) => a.name)
+                      .join(", ")}`}
+                    className="rounded-2xl border-4 border-border bg-card p-4 hover:bg-hoveredButton focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus cursor-pointer transition"
                   >
                     {album.images[0] && (
                       <img
                         src={album.images[0].url}
-                        alt={album.name}
+                        alt={`Album art for ${album.name} by ${album.artists
+                          .map((a) => a.name)
+                          .join(", ")}`}
                         className="w-full h-auto rounded-2xl"
                       />
                     )}
@@ -199,13 +207,18 @@ export default function SearchBar() {
     { key: "artists", label: "Artists" },
   ];
 
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
   return (
     <div className="rounded-2xl border-4 border-border bg-container m-4 p-4 sm:w-full md:w-1/2 lg:w-1/3 h-[70vh] sm:h-[70vh] md:h-[80vh] lg:h-[90vh] overflow-y-auto">
       <div className="w-full">
         <div className="flex justify-center w-full px-4">
+          <label htmlFor="search" className="sr-only">
+            Search for songs, albums and artists
+          </label>
           <Input
             type="text"
-            placeholder="Search..."
+            placeholder="Search for songs, albums and artists..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="placeholder:text-text text-text mt-5 w-full sm:w-full md:w-[calc(100%-2rem)] lg:w-[calc(66.67%-2rem)]"
@@ -213,14 +226,23 @@ export default function SearchBar() {
         </div>
         {/* Toggle-meny */}
         {searchTerm && (
-          <div className="flex justify-center gap-8 mt-4">
-            {tabs.map((tab) => (
+          <div
+            className="flex justify-center gap-8 mt-4"
+            role="tablist"
+            aria-label="Search categories"
+          >
+            {tabs.map((tab, index) => (
               <button
                 key={tab.key}
+                ref={(el) => (tabRefs.current[index] = el)}
                 onClick={() => setActiveTab(tab.key)}
+                role="tab"
+                aria-selected={activeTab === tab.key}
+                aria-controls={`panel-${tab.key}`}
+                id={`tab-${tab.key}`}
                 className={`px-4 py-2 rounded-2xl border-4 transition-colors ${
                   activeTab === tab.key
-                    ? "bg-button text-text font-medium border-border border-4"
+                    ? "bg-button text-text font-medium border-border"
                     : "bg-activeButton text-hoveredButton border-none hover:bg-hoveredButton"
                 }`}
               >
@@ -231,8 +253,14 @@ export default function SearchBar() {
         )}
 
         {/* Resultatcontainer */}
+
         {searchTerm && (
-          <div className="p-2 flex flex-col items-center mt-4 w-full">
+          <div
+            id={`panel-${activeTab}`}
+            role="tabpanel"
+            aria-labelledby={`tab-${activeTab}`}
+            className="p-2 flex flex-col items-center mt-4 w-full"
+          >
             {renderResults()}
           </div>
         )}

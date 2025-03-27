@@ -10,6 +10,11 @@
   font-family: "DM Sans", sans-serif;
 }
 
+:focus {
+  outline: 3px dotted rgba(var(--focus)); /* använder din custom färg */
+  outline-offset: 4px;
+}
+
 .light {
   --background: 54, 105, 238; /*blue*/
   --container: 238, 187, 54; /*yellow*/
