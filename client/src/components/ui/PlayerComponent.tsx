@@ -34,11 +34,11 @@ const PlayerComponent = () => {
   if (isExpanded && currentTrack) {
     return (
       <div
-        className="fixed inset-0 z-50 bg-colors-customPink bg-opacity-95 flex items-center justify-center p-4 overflow-auto"
+        className="fixed inset-0 z-50 bg-container flex items-center justify-center p-4 overflow-auto"
         onClick={toggleExpand} // Klicka utanför innehållet stänger expanderad vy
       >
-        <div 
-          className="relative bg-colors-customYellow border-4 border-black rounded-lg p-6 max-w-[90vw] max-h-[90vh] w-full mx-auto"
+        <div
+          className="relative bg-player border-4 border-border rounded-2xl p-6 max-w-[80vw] max-h-[80vh] w-full"
           onClick={(e) => e.stopPropagation()} // förhindrar att klick inom innehållet stänger overlayen
         >
           {/* Stäng-knapp */}
@@ -47,7 +47,7 @@ const PlayerComponent = () => {
               e.stopPropagation();
               toggleExpand(e);
             }}
-            className="absolute top-4 right-4 text-white text-4xl focus:outline-none"
+            className="absolute top-4 right-4 text-text text-4xl focus:outline-none"
           >
             ✕
           </button>
@@ -55,7 +55,7 @@ const PlayerComponent = () => {
             <img
               src={currentTrack.album.images[0]?.url}
               alt="Album Cover"
-              className="w-full max-w-sm rounded-md border-4 border-black"
+              className="w-3/5 rounded-2xl border-4 border-border"
             />
             <div className="flex flex-col items-center">
               <h2 className="text-3xl font-bold text-white text-center">
@@ -64,7 +64,9 @@ const PlayerComponent = () => {
               <h3 className="text-2xl text-white text-center">
                 {currentTrack.artists.map((artist) => artist.name).join(", ")}
               </h3>
-              <p className="text-black text-xl text-center">{currentTrack.album.name}</p>
+              <p className="text-text text-xl text-center">
+                {currentTrack.album.name}
+              </p>
             </div>
           </div>
           <div className="w-full mt-6 px-2">
@@ -114,16 +116,16 @@ const PlayerComponent = () => {
   // Standard view (minimized)
   return (
     <div
-      className="fixed bottom-0 w-screen bg-colors-customGreen border-t-4 p-6 border-black h-16"
+      className="fixed bottom-0 w-screen bg-player border-t-4 p-6 border-border h-16"
       onClick={toggleExpand}
     >
       <div className="flex items-center h-full px-4">
         <img
           src={currentTrack.album.images[0]?.url}
           alt="Album Cover"
-          className="w-12 h-12 rounded-md border-2 border-black mr-4"
+          className="w-12 h-12 rounded-xl border-2 border-border mr-4"
         />
-        <div className="text-white">
+        <div className="text-text">
           <p className="font-bold truncate">{currentTrack.name}</p>
           <p className="text-sm truncate">
             {currentTrack.artists.map((artist) => artist.name).join(", ")}

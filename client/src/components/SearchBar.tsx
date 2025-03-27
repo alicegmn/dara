@@ -136,7 +136,7 @@ export default function SearchBar() {
   function renderResults() {
     if (loading) {
       return (
-        <p className="text-white text-2xl mt-4">
+        <p className="text-text text-2xl mt-4">
           "Loading vibes... please hold the groove!"
         </p>
       );
@@ -161,20 +161,20 @@ export default function SearchBar() {
                 {formattedAlbums.map((album) => (
                   <div
                     key={album.id}
-                    className="rounded-md border-4 border-black bg-colors-customBlue p-4"
+                    className="rounded-2xl border-4 border-border bg-card p-4 hover:bg-hoveredButton"
                   >
                     {album.images[0] && (
                       <img
                         src={album.images[0].url}
                         alt={album.name}
-                        className="w-full h-auto rounded-md"
+                        className="w-full h-auto rounded-2xl"
                       />
                     )}
-                    <h3 className="text-white font-bold mt-2">{album.name}</h3>
+                    <h3 className="text-text font-bold mt-2">{album.name}</h3>
                     <div className="artist-names mt-1">
                       {album.artists &&
                         album.artists.map((artist, index) => (
-                          <p key={index} className="text-black">
+                          <p key={index} className="text-text">
                             {artist.name}
                           </p>
                         ))}
@@ -183,7 +183,7 @@ export default function SearchBar() {
                 ))}
               </div>
             ) : (
-              <p className="text-white">No albums found.</p>
+              <p className="text-text">No albums found.</p>
             )}
           </div>
         );
@@ -200,7 +200,7 @@ export default function SearchBar() {
   ];
 
   return (
-    <div className="rounded-md border-4 border-black bg-colors-customGreen m-4 p-4 sm:w-full md:w-1/2 lg:w-1/3 h-[70vh] sm:h-[70vh] md:h-[80vh] lg:h-[90vh] overflow-y-auto">
+    <div className="rounded-2xl border-4 border-border bg-container m-4 p-4 sm:w-full md:w-1/2 lg:w-1/3 h-[70vh] sm:h-[70vh] md:h-[80vh] lg:h-[90vh] overflow-y-auto">
       <div className="w-full">
         <div className="flex justify-center w-full px-4">
           <Input
@@ -208,20 +208,20 @@ export default function SearchBar() {
             placeholder="Search..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="placeholder:text-white text-white mt-5 w-full sm:w-full md:w-[calc(100%-2rem)] lg:w-[calc(66.67%-2rem)]"
+            className="placeholder:text-text text-text mt-5 w-full sm:w-full md:w-[calc(100%-2rem)] lg:w-[calc(66.67%-2rem)]"
           />
         </div>
         {/* Toggle-meny */}
         {searchTerm && (
-          <div className="flex justify-center gap-4 mt-4">
+          <div className="flex justify-center gap-8 mt-4">
             {tabs.map((tab) => (
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className={`px-4 py-2 rounded-md border transition-colors ${
+                className={`px-4 py-2 rounded-2xl border-4 transition-colors ${
                   activeTab === tab.key
-                    ? "bg-colors-customPink text-black font-medium border-black border-4"
-                    : "bg-transparent text-white hover:bg-colors-customPink"
+                    ? "bg-button text-text font-medium border-border border-4"
+                    : "bg-activeButton text-hoveredButton border-none hover:bg-hoveredButton"
                 }`}
               >
                 {tab.label}

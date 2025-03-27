@@ -27,20 +27,20 @@ const Header: React.FC = () => {
   return (
     <header className="p-3">
       <div className="flex justify-between items-center ml-10 mr-10 relative">
-        <h1 className="text-white text-left text-5xl">
+        <h1 className="text-heading text-left text-5xl">
           <NavLink
             to="/"
             className="cursor-pointer hover:opacity-80 transition-opacity duration-200 ease-in-out"
             onClick={() => setMenuOpen(false)}
           >
-            dara<span className="text-pink-500">.</span>
+            dara<span className="text-daraPink">.</span>
           </NavLink>
         </h1>
 
         {/* Hamburgarmeny - synlig på alla skärmstorlekar */}
         <button
           onClick={toggleMenu}
-          className="text-white focus:outline-none"
+          className="text-white focus:outline-none z-20"
           aria-label="Toggle navigation menu"
         >
           <svg
@@ -61,14 +61,14 @@ const Header: React.FC = () => {
 
         {/* Navigationsmeny - renderas endast om menyn är öppen */}
         {menuOpen && (
-          <nav className="absolute top-full right-0 mt-2 bg-gray-900 rounded-lg shadow-lg p-4 z-10">
-            <ul className="flex flex-col gap-y-4 items-center">
+          <nav className="absolute inset-0 bg-container z-10">
+            <ul className="flex flex-col gap-y-4">
               <li>
                 <NavLink
                   to="/"
                   className={({ isActive }) =>
-                    `text-white hover:text-pink-500 transition-colors ${
-                      isActive ? "text-pink-500" : ""
+                    `text-text hover:text-hoveredButton transition-colors ${
+                      isActive ? "text-activeButton" : ""
                     }`
                   }
                   onClick={() => setMenuOpen(false)}
@@ -81,8 +81,8 @@ const Header: React.FC = () => {
                   to="https://www.spotify.com/se/account/overview/"
                   target="_blank"
                   className={({ isActive }) =>
-                    `text-white hover:text-pink-500 transition-colors ${
-                      isActive ? "text-pink-500" : ""
+                    `text-text hover:text-hoveredButton transition-colors ${
+                      isActive ? "text-activeButton" : ""
                     }`
                   }
                   onClick={() => setMenuOpen(false)}
@@ -94,7 +94,7 @@ const Header: React.FC = () => {
                 <li>
                   <button
                     onClick={handleLogout}
-                    className="text-white hover:text-pink-500 transition-colors"
+                    className="text-text hover:text-hoveredButton transition-colors"
                   >
                     Log out
                   </button>

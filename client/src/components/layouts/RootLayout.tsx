@@ -7,9 +7,9 @@ export default function RootLayout() {
   const accessToken = useAccessStore((state) => state.accessToken);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="App light min-h-screen flex flex-col">
       {accessToken && <Header />}
-      <main className="flex-1">
+      <main className="flex-1 pb-16">
         <Outlet />
       </main>
       {accessToken && <PlayerComponent />}

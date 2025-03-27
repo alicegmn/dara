@@ -22,7 +22,7 @@ export default function SongItem({
   };
   return (
     <li
-      className="flex items-center gap-4 p-2 m-2 border-4 border-black rounded-md cursor-pointer bg-colors-customPink hover:bg-colors-customBlue"
+      className="flex items-center gap-4 p-2 m-2 border-4 border-border rounded-2xl cursor-pointer bg-card hover:text-hoveredButton"
       onClick={onClick}
     >
       {song.images.length > 0 && (

@@ -42,13 +42,9 @@ export default function ListContainer() {
   }, [accessToken]);
 
   return (
-    <div className="rounded-md border-4 border-black bg-colors-customYellow m-4 p-4 sm:w-full md:w-1/2 lg:w-1/3 h-[70vh] sm:h-[70vh] md:h-[80vh] lg:h-[90vh] overflow-y-auto">
-      <h2 className="text-4xl font-bold mb-4 bg-colors-customYellow">
-        Top Artists
-      </h2>
+    <div className="rounded-2xl border-4 border-border bg-container m-4 p-4 sm:w-full md:w-1/2 lg:w-1/3 h-[70vh] sm:h-[70vh] md:h-[80vh] lg:h-[90vh] overflow-y-auto">
+      <h2 className="text-4xl text-center font-bold mb-4">Your top artists</h2>
       <ArtistList artists={artists} />
     </div>
   );
 }
-
-// #EEBB36

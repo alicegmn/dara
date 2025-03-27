@@ -30,9 +30,7 @@ export default function SongList({
           />
         ))
       ) : (
-        <p className="bg-colors-customPink rounded-md border-4 border-black p-4">
-          No songs found.
-        </p>
+        <p>No songs found.</p>
       )}
     </ul>
   );

@@ -7,8 +7,8 @@ export default function useTheme() {
 
   // Vid första rendern, kolla om användaren har valt ett tema tidigare
   useEffect(() => {
-    const storedTheme = localStorage.getItem("theme") as Theme | null;
-    if (storedTheme) {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme === "dark" || storedTheme === "light") {
       setTheme(storedTheme);
     } else {
       setTheme("light");

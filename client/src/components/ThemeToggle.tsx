@@ -7,7 +7,7 @@ const ThemeToggle: React.FC = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 m-2 rounded-md border border-black bg-colors-customGreen text-white hover:bg-colors-customPink transition-colors"
+      className="p-2 m-2 rounded-2xl border-4 border-border bg-button text-text hover:bg-hoveredButton active:activeButton"
     >
       {theme === "light" ? "Dark mode" : "Light mode"}
     </button>
