@@ -25,88 +25,115 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="p-3">
-      <div className="flex justify-between items-center ml-10 mr-10 relative">
-        <h1 className="text-heading text-left text-5xl">
+    <header className="w-full px-4 py-3 align-center">
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
+        {/* Vänster: Logo */}
+        <h1 className="text-heading text-5xl z-50 font-bold">
           <NavLink
             to="/"
-            className="cursor-pointer hover:opacity-80 transition-opacity duration-200 ease-in-out"
+            className="cursor-pointer hover:text-hoveredButton transition-opacity duration-200 ease-in-out"
             onClick={() => setMenuOpen(false)}
           >
             dara<span className="text-daraPink">.</span>
           </NavLink>
         </h1>
 
-        {/* Hamburgarmeny - synlig på alla skärmstorlekar */}
-        <button
-          onClick={toggleMenu}
-          className="text-white focus:outline-none z-20"
-          aria-label="Toggle navigation menu"
-        >
-          <svg
-            className="w-8 h-8"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+        {/* Höger: Hamburgermeny */}
+        <div className="relative z-20">
+          <button
+            onClick={toggleMenu}
+            className="text-white focus:outline-none"
+            aria-label="Toggle navigation menu"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
-        </button>
+            <svg
+              className="w-8 h-8"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
 
-        {/* Navigationsmeny - renderas endast om menyn är öppen */}
-        {menuOpen && (
-          <nav className="absolute inset-0 bg-container z-10">
-            <ul className="flex flex-col gap-y-4">
-              <li>
-                <NavLink
-                  to="/"
-                  className={({ isActive }) =>
-                    `text-text hover:text-hoveredButton transition-colors ${
-                      isActive ? "text-activeButton" : ""
-                    }`
-                  }
-                  onClick={() => setMenuOpen(false)}
+          {/* Navigationsmeny */}
+          {menuOpen && (
+            <nav className="fixed inset-0 bg-container z-10 p-4 text-center content-center">
+              {/* Stäng-knapp (X) */}
+              <button
+                onClick={toggleMenu}
+                className="absolute top-4 right-4 text-button focus:outline-none"
+                aria-label="Close menu"
+              >
+                <svg
+                  className="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  Home
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="https://www.spotify.com/se/account/overview/"
-                  target="_blank"
-                  className={({ isActive }) =>
-                    `text-text hover:text-hoveredButton transition-colors ${
-                      isActive ? "text-activeButton" : ""
-                    }`
-                  }
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Account settings
-                </NavLink>
-              </li>
-              {accessToken && (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+
+              <ul className="flex flex-col gap-y-4 mt-16">
                 <li>
-                  <button
-                    onClick={handleLogout}
-                    className="text-text hover:text-hoveredButton transition-colors"
+                  <NavLink
+                    to="/"
+                    className={({ isActive }) =>
+                      `text-text hover:text-hoveredButton transition-colors ${
+                        isActive ? "text-activeButton" : ""
+                      }`
+                    }
+                    onClick={() => setMenuOpen(false)}
                   >
-                    Log out
-                  </button>
+                    Home
+                  </NavLink>
                 </li>
-              )}
-              <li>
-                <ThemeToggle />
-              </li>
-            </ul>
-          </nav>
-        )}
+                <li>
+                  <NavLink
+                    to="https://www.spotify.com/se/account/overview/"
+                    target="_blank"
+                    className={({ isActive }) =>
+                      `text-text hover:text-hoveredButton transition-colors ${
+                        isActive ? "text-activeButton" : ""
+                      }`
+                    }
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Account settings
+                  </NavLink>
+                </li>
+                {accessToken && (
+                  <li>
+                    <button
+                      onClick={handleLogout}
+                      className="text-text hover:text-hoveredButton transition-colors"
+                    >
+                      Log out
+                    </button>
+                  </li>
+                )}
+                <li>
+                  <ThemeToggle />
+                </li>
+              </ul>
+            </nav>
+          )}
+        </div>
       </div>
+
+      {/* Logout modal */}
       <LogoutModal
         isOpen={isModalOpen}
         onConfirm={confirmLogout}

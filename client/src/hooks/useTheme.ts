@@ -1,33 +1,10 @@
-import { useState, useEffect } from "react";
-
-type Theme = "light" | "dark";
+// src/hooks/useTheme.ts
+import useThemeStore from "@/store/themeStore";
 
 export default function useTheme() {
-  const [theme, setTheme] = useState<Theme>("light");
+  const theme = useThemeStore((state) => state.theme);
+  const toggleTheme = useThemeStore((state) => state.toggleTheme);
+  const setTheme = useThemeStore((state) => state.setTheme);
 
-  // Vid första rendern, kolla om användaren har valt ett tema tidigare
-  useEffect(() => {
-    const storedTheme = localStorage.getItem("theme");
-    if (storedTheme === "dark" || storedTheme === "light") {
-      setTheme(storedTheme);
-    } else {
-      setTheme("light");
-    }
-  }, []);
-
-  // Applicera temat på document root och spara i localStorage
-  useEffect(() => {
-    localStorage.setItem("theme", theme);
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
-  };
-
-  return { theme, toggleTheme };
+  return { theme, toggleTheme, setTheme };
 }
