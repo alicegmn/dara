@@ -1,24 +1,36 @@
-import SongItem from "../ui/SongItem"
+import SongItem from "../ui/SongItem";
 
 interface Song {
   id: string;
   name: string;
   images: { url: string }[];
+  uri: string;
 }
 
 interface SongListProps {
   songs: Song[];
+  handlePlayTrack: (uri: string) => void;
+  togglePlay: (play: boolean) => void;
 }
 
-export default function SongList({ songs }: SongListProps) {
+export default function SongList({
+  songs,
+  handlePlayTrack,
+  togglePlay,
+}: SongListProps) {
   return (
     <ul className="mt-4">
       {songs.length > 0 ? (
-        songs.map((song) => <SongItem key={song.id} song={song} />)
+        songs.map((song) => (
+          <SongItem
+            key={song.id}
+            song={song}
+            handlePlayTrack={handlePlayTrack}
+            togglePlay={togglePlay}
+          />
+        ))
       ) : (
-        
-        <p className="bg-colors-customPink rounded-md border-4 border-black p-4">No songs found.</p>
-    
+        <p>No songs found.</p>
       )}
     </ul>
   );

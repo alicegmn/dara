@@ -11,7 +11,10 @@ interface Track {
 
 export default function ArtistPage() {
   const { id } = useParams(); // Get artist ID from URL
-  const [artist, setArtist] = useState<{ name: string; image: string }>({ name: "", image: "" });
+  const [artist, setArtist] = useState<{ name: string; image: string }>({
+    name: "",
+    image: "",
+  });
   const [topTracks, setTopTracks] = useState<Track[]>([]);
   const accessToken = useAccessStore().accessToken;
 
@@ -21,14 +24,20 @@ export default function ArtistPage() {
 
       try {
         // Fetch artist details
-        const artistResponse = await axios.get(`https://api.spotify.com/v1/artists/${id}`, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
+        const artistResponse = await axios.get(
+          `https://api.spotify.com/v1/artists/${id}`,
+          {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
+        );
 
         // Fetch top tracks
-        const tracksResponse = await axios.get(`https://api.spotify.com/v1/artists/${id}/top-tracks?market=US`, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
+        const tracksResponse = await axios.get(
+          `https://api.spotify.com/v1/artists/${id}/top-tracks?market=US`,
+          {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
+        );
 
         setArtist({
           name: artistResponse.data.name,
@@ -47,7 +56,12 @@ export default function ArtistPage() {
   return (
     <div className="flex items-center flex-col">
       <section className="flex items-center gap-4">
-        {artist.image && <img src={artist.image} className="w-28 h-28 border-4 border-black rounded-full" />}
+        {artist.image && (
+          <img
+            src={artist.image}
+            className="w-28 h-28 border-4 border-black rounded-full"
+          />
+        )}
         <h2 className="text-white font-bold text-5xl">{artist.name}</h2>
       </section>
       <h3 className="text-white font-bold text-3xl m-4">Top Songs</h3>
@@ -55,9 +69,16 @@ export default function ArtistPage() {
         <ul>
           {topTracks.length > 0 ? (
             topTracks.map((track) => (
-              <li key={track.id} className="border-b-2 border-black p-2 flex items-center gap-4">
+              <li
+                key={track.id}
+                className="border-b-2 border-black p-2 flex items-center gap-4"
+              >
                 {track.album.images.length > 0 && (
-                  <img src={track.album.images[0].url} alt={track.name} className="w-12 h-12 rounded" />
+                  <img
+                    src={track.album.images[0].url}
+                    alt={track.name}
+                    className="w-12 h-12 rounded"
+                  />
                 )}
                 <p className="text-lg">{track.name}</p>
               </li>
@@ -71,9 +92,7 @@ export default function ArtistPage() {
   );
 }
 
-
 // import yellow from "../images/yellow-dog.jpg";
-
 
 // export default function ArtistPage() {
 //     return (

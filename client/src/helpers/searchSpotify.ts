@@ -7,9 +7,12 @@ interface SpotifySearchResult {
   artists: {
     items: any[];
   };
+  albums: {
+    items: any[];
+  };
 }
 
-// Funktion för att söka efter låtar och artister på Spotify
+// Funktion för att söka efter låtar, artister och album på Spotify
 async function searchSpotify(
   query: string,
   accessToken: string
@@ -24,20 +27,22 @@ async function searchSpotify(
       },
       params: {
         q: query,
-        type: "track,artist",
-        limit: 5, // Begränsa till 5 resultat per typ
+        type: "track,artist,album",
+        // limit: 5, // Begränsa till 5 resultat per typ
       },
     });
 
     return {
       tracks: response.data.tracks,
       artists: response.data.artists,
+      albums: response.data.albums,
     };
   } catch (error: any) {
     console.error("Error searching Spotify:", error.message);
     return {
       tracks: { items: [] },
       artists: { items: [] },
+      albums: { items: [] },
     };
   }
 }
