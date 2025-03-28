@@ -133,7 +133,7 @@ Once a user has signed-in they are taken to the Home Page where two lists appear
 - This shows a list of the users top songs which they can scroll through, and click on the song to take them to the Spotify App or browser page to play the song.
 - UI/UX includes responsiveness, cursor-pointer, and a hover effect
 
-# Favorite Songs Feature Overview
+# Favorite list (Alice)
 
 Add or remove songs from favorites. It leverages Zustand for state management with persistence in localStorage.
 
