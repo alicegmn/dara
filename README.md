@@ -132,3 +132,45 @@ Once a user has signed-in they are taken to the Home Page where two lists appear
 
 - This shows a list of the users top songs which they can scroll through, and click on the song to take them to the Spotify App or browser page to play the song.
 - UI/UX includes responsiveness, cursor-pointer, and a hover effect
+
+# Favorite Songs Feature Overview
+
+Add or remove songs from favorites. It leverages Zustand for state management with persistence in localStorage.
+
+## Key Components
+
+- **Favorite Store (`favoriteStore.ts`):**
+
+  - Manages a list of full song objects.
+  - Uses Zustand with persist middleware to save state in localStorage.
+  - Provides `addFavorite` and `removeFavorite` functions.
+
+- **FavoriteButton Component (`FavoriteButton.tsx`):**
+
+  - Toggles a song’s favorite status via Spotify API (PUT to add, DELETE to remove).
+  - Dynamically changes appearance and text based on favorite status.
+  - Prevents event propagation to avoid interfering with other click events.
+
+- **SongItem Component (`SongItem.tsx`):**
+
+  - Displays individual song details.
+  - Integrates the FavoriteButton for quick favoriting/unfavoriting.
+  - Supports song playback via the global player store.
+
+- **Favorites Page (`Favorites.tsx`):**
+  - Retrieves and displays the list of favorite songs from the global store.
+  - Renders songs using the SongItem component.
+  - Provides a navigation link back to the home page if no favorites are present.
+
+## Workflow
+
+1. **Adding a favorite:**  
+   The user clicks the FavoriteButton, which sends a PUT request to Spotify. Upon success, the song is added to the global favorite store and persisted.
+
+2. **Removing a favorite:**  
+   If a song is already favorited, clicking the button sends a DELETE request to Spotify and removes the song from the global store.
+
+3. **Displaying favorites:**  
+   The Favorites page renders the list of favorite songs, allowing users to view and play their selected tracks.
+
+This modular design ensures a seamless user experience with persistent favorite song management across sessions.

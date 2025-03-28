@@ -27,6 +27,9 @@
   --hoveredButton: 253, 144, 229; /*lighter pink*/
   --activeButton: 54, 105, 238; /*blue*/
   --focus: 255, 255, 255; /*white*/
+  --favorite: 54, 105, 238; /*blue*/
+  --hoveredFavorite: 238, 54, 197; /*pink*/
+  --activeFavorite: 253, 144, 229; /*lighter pink*/
   --daraPink: 238, 54, 197; /*pink*/
 
   background: rgba(var(--background));
@@ -44,6 +47,9 @@
   --hoveredButton: 228, 31, 123; /*deep pink*/
   --activeButton: 54, 105, 238; /*blue*/
   --focus: 255, 255, 255; /*white*/
+  --favorite: 255, 255, 255;
+  --hoveredFavorite: 228, 31, 123; /*deep pink*/
+  --activeFavorite: 238, 54, 197; /*pink*/
   --daraPink: 238, 54, 197; /*pink*/
 
   background: rgba(var(--background));

@@ -4,7 +4,7 @@ import Home from "../pages/Home";
 import NotFound from "../pages/NotFound";
 import ArtistId from "@/pages/ArtistId";
 // import Player from "@/pages/Player";
-import Reset from "@/pages/Reset";
+import Favorites from "@/pages/Favorites";
 import AuthProvider from "@/providers/AuthProvider";
 
 const router = createBrowserRouter([
@@ -25,8 +25,8 @@ const router = createBrowserRouter([
         element: <ArtistId />,
       },
       {
-        path: "/reset",
-        element: <Reset />,
+        path: "/favorites",
+        element: <Favorites />,
       },
       {
         path: "*",

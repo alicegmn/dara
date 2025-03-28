@@ -20,6 +20,9 @@ export default {
         hoveredButton: "rgba(var(--hoveredButton))",
         activeButton: "rgba(var(--activeButton))",
         focus: "rgba(var(--focus))",
+        favorite: "rgba(var(--favorite))",
+        hoveredFavorite: "rgba(var(--hoveredFavorite))",
+        activeFavorite: "rgba(var(--activeFavorite))",
         daraPink: "rgba(var(--daraPink))",
       },
       card: {

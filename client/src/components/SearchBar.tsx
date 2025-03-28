@@ -136,7 +136,7 @@ export default function SearchBar() {
   function renderResults() {
     if (loading) {
       return (
-        <p className="text-text text-2xl mt-4">
+        <p className="text-text text-2xl mt-4 text-center">
           "Loading vibes... please hold the groove!"
         </p>
       );

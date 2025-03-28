@@ -159,6 +159,19 @@ const Header: React.FC = () => {
                 </li>
                 <li>
                   <NavLink
+                    to="/favorites"
+                    className={({ isActive }) =>
+                      `text-text hover:text-hoveredButton transition-colors ${
+                        isActive ? "text-activeButton" : ""
+                      }`
+                    }
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Your favorites
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
                     to="https://www.spotify.com/se/account/overview/"
                     target="_blank"
                     className={({ isActive }) =>
